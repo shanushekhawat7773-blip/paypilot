@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;1,6..72,400&family=Inter+Tight:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-sans: 'Inter Tight', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --bg-paper: #F5F2EC;
+  --bg-surface: #FFFFFF;
+  --bg-surface-subtle: #FAF8F5;
+  --ink: #111111;
+  --ink-muted: #55524D;
+  --ink-subtle: #858077;
+  --ink-hairline: rgba(17, 17, 17, 0.12);
+  --ink-faint: rgba(17, 17, 17, 0.06);
+  --navy: #0B2A5B;
+  --navy-hover: #071C3F;
+  --amber-alert: #D97706;
+  --amber-bg: #FEF3C7;
+  --red-blocked: #9E2A2B;
+  --red-bg: #FDF2F2;
+  --green-paid: #1B4931;
+  --green-bg: #EAF4EE;
+}
+
+body {
+  background-color: var(--bg-paper);
+  color: var(--ink);
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tabular numerals for money and timestamps */
+.tabular-numbers, .money, .mono-data {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* Rubber Stamp Aesthetics */
+.stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15rem 0.5rem;
+  font-family: var(--font-mono), monospace;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-width: 1.5px;
+  border-style: solid;
+  border-radius: 2px;
+  user-select: none;
+  transform: rotate(-3deg);
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.stamp-paid {
+  color: #1B4931;
+  border-color: #1B4931;
+  background-color: rgba(27, 73, 49, 0.08);
+}
+
+.stamp-held {
+  color: #B45309;
+  border-color: #B45309;
+  background-color: rgba(180, 83, 9, 0.08);
+}
+
+.stamp-blocked {
+  color: #9E2A2B;
+  border-color: #9E2A2B;
+  background-color: rgba(158, 42, 43, 0.08);
+}
+
+.stamp-verified {
+  color: #0B2A5B;
+  border-color: #0B2A5B;
+  background-color: rgba(11, 42, 91, 0.08);
+}
+
+/* Receipt Roll Paper Aesthetics */
+.receipt-paper {
+  background-color: #FAF8F5;
+  border: 1px solid rgba(17, 17, 17, 0.14);
+  position: relative;
+  box-shadow: 0 1px 3px rgba(17, 17, 17, 0.04);
+}
+
+/* Perforated receipt edge */
+.receipt-paper::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background-size: 12px 6px;
+  background-repeat: repeat-x;
+  background-image: radial-gradient(circle at 6px 0px, transparent 4px, #FAF8F5 5px);
+}
+
+.receipt-paper::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background-size: 12px 6px;
+  background-repeat: repeat-x;
+  background-image: radial-gradient(circle at 6px 6px, transparent 4px, #FAF8F5 5px);
+}
+
+/* Hairline Editorial Borders */
+.hairline-border {
+  border: 1px solid rgba(17, 17, 17, 0.12);
+}
+
+.hairline-b {
+  border-bottom: 1px solid rgba(17, 17, 17, 0.12);
+}
+
+.hairline-t {
+  border-top: 1px solid rgba(17, 17, 17, 0.12);
+}
+
+.hairline-r {
+  border-right: 1px solid rgba(17, 17, 17, 0.12);
+}
+
+.hairline-l {
+  border-left: 1px solid rgba(17, 17, 17, 0.12);
+}
+
+/* Accessible focus styling */
+*:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
