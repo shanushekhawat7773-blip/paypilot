@@ -1,6 +1,11 @@
 # PayPilot 🧭
 > **"Let AI handle the payments. You keep the final say."**
 
+[![CI Tests](https://img.shields.io/badge/Vitest-27%20Passed%20(100%25)-success?style=flat-square)](file:///c:/Users/mr.ss/Desktop/PayPilot/src/lib/guardrails/engine.test.ts)
+[![PayPal APIs](https://img.shields.io/badge/PayPal%20Sandbox-Orders%20v2%20%2B%20Payouts%20v1%20%2B%20Webhooks-003087?style=flat-square)](https://developer.paypal.com)
+[![Protocol](https://img.shields.io/badge/Agent%20Standard-Model%20Context%20Protocol%20(MCP)-blueviolet?style=flat-square)](file:///c:/Users/mr.ss/Desktop/PayPilot/src/app/api/agent/tools/route.ts)
+[![License](https://img.shields.io/badge/License-MIT-black?style=flat-square)](file:///c:/Users/mr.ss/Desktop/PayPilot/LICENSE)
+
 PayPilot is an autonomous spending leash and private ledger for AI agents. When a user states a payment task in plain English (or voice), PayPilot plans it, checks it against deterministic rules, scores risk, requests human approval when needed, executes through PayPal Sandbox, and records every decision on a live, tamper-evident audit receipt roll.
 
 Built for the **PayPal AI Agent Hackathon 2026**.

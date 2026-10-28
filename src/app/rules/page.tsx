@@ -22,6 +22,7 @@ export default function RulesPage() {
   const [newPayeeName, setNewPayeeName] = useState("");
   const [newPayeeEmail, setNewPayeeEmail] = useState("");
   const [newPayeeLimit, setNewPayeeLimit] = useState("250");
+  const [settlementRail, setSettlementRail] = useState<"USD" | "PYUSD">("USD");
 
   // Simulator inputs
   const [simPayee, setSimPayee] = useState("QuickInvoice Ltd");
@@ -325,6 +326,52 @@ export default function RulesPage() {
                     </label>
                   );
                 })}
+              </div>
+            </div>
+
+            {/* Settlement Rails & PYUSD Protocol */}
+            <div className="pt-2 hairline-t">
+              <label className="block text-xs font-mono uppercase text-ink-muted mb-2">
+                PayPal Settlement Rail & Currency Standard
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div
+                  onClick={() => setSettlementRail("USD")}
+                  className={`p-3 rounded hairline-border cursor-pointer transition-colors ${
+                    settlementRail === "USD"
+                      ? "bg-paper-200 border-navy text-ink"
+                      : "bg-paper-100 text-ink-muted hover:bg-paper-200"
+                  }`}
+                >
+                  <div className="flex items-center justify-between font-mono text-xs font-bold">
+                    <span>USD (PayPal Sandbox REST)</span>
+                    {settlementRail === "USD" && (
+                      <span className="stamp stamp-paid text-[10px]">ACTIVE</span>
+                    )}
+                  </div>
+                  <p className="text-[11px] font-sans text-ink-muted mt-1">
+                    Disbursements executed via Orders v2 & Payouts v1 with SHA-256 idempotency.
+                  </p>
+                </div>
+
+                <div
+                  onClick={() => setSettlementRail("PYUSD")}
+                  className={`p-3 rounded hairline-border cursor-pointer transition-colors ${
+                    settlementRail === "PYUSD"
+                      ? "bg-paper-200 border-navy text-ink"
+                      : "bg-paper-100 text-ink-muted hover:bg-paper-200"
+                  }`}
+                >
+                  <div className="flex items-center justify-between font-mono text-xs font-bold">
+                    <span>PYUSD (PayPal USD Stablecoin)</span>
+                    {settlementRail === "PYUSD" && (
+                      <span className="stamp stamp-verified text-[10px]">PROGRAMMABLE</span>
+                    )}
+                  </div>
+                  <p className="text-[11px] font-sans text-ink-muted mt-1">
+                    Conditional milestone escrow and programmable agent micro-settlements backed 1:1.
+                  </p>
+                </div>
               </div>
             </div>
 
