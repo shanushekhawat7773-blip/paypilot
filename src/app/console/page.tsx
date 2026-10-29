@@ -268,7 +268,7 @@ function ConsoleContent() {
               </h3>
               <p className="text-xs text-ink-muted font-sans max-w-md mx-auto leading-relaxed">
                 State an instruction above, or run the 90-second demo scenario to
-                observe PayPilot's deterministic spending leash in action.
+                observe PayPilot&apos;s deterministic spending leash in action.
               </p>
               <div className="pt-2">
                 <button

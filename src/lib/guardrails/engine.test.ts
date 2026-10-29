@@ -533,4 +533,117 @@ describe("PayPilot Guardrails Engine", () => {
       expect(result.ruleCode).toBe("ALL_RULES_PASSED");
     });
   });
+
+  // --- Rule 8: Critical Numerical & Currency Edge Cases ---
+  describe("Edge Cases: Boundaries, Zero, Negative & Currency Mismatch", () => {
+    it("28. blocks payment with zero amount ($0.00)", () => {
+      const step: PaymentStep = {
+        ...mockBaseStep,
+        amount: 0,
+      };
+
+      const result = evaluateGuardrails(step, {
+        rules: DEFAULT_RULES,
+        approvedPayees: INITIAL_APPROVED_PAYEES,
+      });
+
+      expect(result.decision).toBe("BLOCK");
+      expect(result.ruleCode).toBe("INVALID_AMOUNT");
+      expect(result.reasoning).toContain("must be greater than zero");
+    });
+
+    it("29. blocks payment with negative amount (-$50.00)", () => {
+      const step: PaymentStep = {
+        ...mockBaseStep,
+        amount: -50,
+      };
+
+      const result = evaluateGuardrails(step, {
+        rules: DEFAULT_RULES,
+        approvedPayees: INITIAL_APPROVED_PAYEES,
+      });
+
+      expect(result.decision).toBe("BLOCK");
+      expect(result.ruleCode).toBe("INVALID_AMOUNT");
+      expect(result.reasoning).toContain("must be greater than zero");
+    });
+
+    it("30. blocks payment with unsupported currency (JPY / BTC)", () => {
+      const step: PaymentStep = {
+        ...mockBaseStep,
+        currency: "JPY",
+      };
+
+      const result = evaluateGuardrails(step, {
+        rules: DEFAULT_RULES,
+        approvedPayees: INITIAL_APPROVED_PAYEES,
+      });
+
+      expect(result.decision).toBe("BLOCK");
+      expect(result.ruleCode).toBe("CURRENCY_MISMATCH");
+      expect(result.reasoning).toContain("unsupported or incompatible");
+    });
+
+    it("31. blocks payment 1 cent over hard per-payment cap ($1000.01)", () => {
+      const step: PaymentStep = {
+        ...mockBaseStep,
+        amount: 1000.01,
+      };
+
+      const result = evaluateGuardrails(step, {
+        rules: DEFAULT_RULES,
+        approvedPayees: INITIAL_APPROVED_PAYEES,
+      });
+
+      expect(result.decision).toBe("BLOCK");
+      expect(result.ruleCode).toBe("PER_PAYMENT_CAP_EXCEEDED");
+    });
+
+    it("32. holds payment 1 cent over monthly budget ($3500.01 projected)", () => {
+      const step: PaymentStep = {
+        ...mockBaseStep,
+        amount: 50.01,
+      };
+
+      const result = evaluateGuardrails(step, {
+        rules: DEFAULT_RULES,
+        approvedPayees: INITIAL_APPROVED_PAYEES,
+        currentMonthTotalSpend: 3450,
+      });
+
+      expect(result.decision).toBe("HOLD_FOR_APPROVAL");
+      expect(result.ruleCode).toBe("MONTHLY_BUDGET_EXCEEDED");
+    });
+
+    it("33. natively supports PayPal PYUSD stablecoin settlement", () => {
+      const step: PaymentStep = {
+        ...mockBaseStep,
+        currency: "PYUSD",
+        amount: 100,
+      };
+
+      const result = evaluateGuardrails(step, {
+        rules: DEFAULT_RULES,
+        approvedPayees: INITIAL_APPROVED_PAYEES,
+      });
+
+      expect(result.decision).toBe("ALLOW");
+      expect(result.ruleCode).toBe("ALL_RULES_PASSED");
+    });
+
+    it("34. blocks NaN amount gracefully", () => {
+      const step: PaymentStep = {
+        ...mockBaseStep,
+        amount: NaN,
+      };
+
+      const result = evaluateGuardrails(step, {
+        rules: DEFAULT_RULES,
+        approvedPayees: INITIAL_APPROVED_PAYEES,
+      });
+
+      expect(result.decision).toBe("BLOCK");
+      expect(result.ruleCode).toBe("INVALID_AMOUNT");
+    });
+  });
 });

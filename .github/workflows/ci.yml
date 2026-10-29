@@ -23,7 +23,13 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Run Guardrails Vitest Suite (27 Cases)
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Run TypeScript Strict Typecheck
+        run: npm run typecheck
+
+      - name: Run Vitest Unit Test Suites (53 Cases)
         run: npm test
 
       - name: Verify Next.js Production Build

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { UserRulesConfig, Payee, GuardrailResult, RiskAssessment } from "@/types/payment";
 import { DEFAULT_RULES, INITIAL_APPROVED_PAYEES } from "@/lib/guardrails/defaultRules";
 import {
@@ -118,7 +118,7 @@ export default function RulesPage() {
   };
 
   // Run live simulation
-  const runSimulation = async () => {
+  const runSimulation = useCallback(async () => {
     setIsSimulating(true);
     try {
       const res = await fetch("/api/agent/tools", {
@@ -147,15 +147,15 @@ export default function RulesPage() {
     } finally {
       setIsSimulating(false);
     }
-  };
+  }, [simPayee, simAmount, simCategory, simConditionLimit]);
 
-  // Re-run simulation when inputs change
+  // Re-run simulation when inputs or rules change
   useEffect(() => {
     const timer = setTimeout(() => {
       runSimulation();
     }, 250);
     return () => clearTimeout(timer);
-  }, [simPayee, simAmount, simCategory, simConditionLimit, rules]);
+  }, [runSimulation, rules]);
 
   return (
     <div className="space-y-8">

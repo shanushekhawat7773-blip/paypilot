@@ -55,6 +55,29 @@ export function evaluateGuardrails(
     currentMonthTotalSpend = 0,
   } = context;
 
+  // 0a. Amount Validity (Non-positive / NaN Protection)
+  if (step.amount <= 0 || isNaN(step.amount)) {
+    return {
+      decision: "BLOCK",
+      ruleCode: "INVALID_AMOUNT",
+      triggeredRule: "Amount Validity Check",
+      reasoning: `Payment amount must be greater than zero. Received: $${step.amount}.`,
+      details: { amount: step.amount },
+    };
+  }
+
+  // 0b. Currency Compatibility
+  const supportedCurrencies = ["USD", "EUR", "GBP", "CAD", "AUD", "PYUSD"];
+  if (!step.currency || !supportedCurrencies.includes(step.currency.toUpperCase())) {
+    return {
+      decision: "BLOCK",
+      ruleCode: "CURRENCY_MISMATCH",
+      triggeredRule: "Currency Compatibility",
+      reasoning: `Currency '${step.currency}' is unsupported or incompatible with your PayPal settlement account.`,
+      details: { currency: step.currency },
+    };
+  }
+
   // 1. Explicit User Constraint / Condition Limit
   // E.g., "renew domain if under $15" -> vendor asks $18 -> BLOCK
   if (

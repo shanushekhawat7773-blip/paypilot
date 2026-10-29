@@ -58,6 +58,8 @@ export interface GuardrailResult {
     | "DAILY_VELOCITY_EXCEEDED"
     | "DUPLICATE_PAYMENT_DETECTED"
     | "SPECIFIC_CONDITION_FAILED"
+    | "INVALID_AMOUNT"
+    | "CURRENCY_MISMATCH"
     | "ALL_RULES_PASSED";
   reasoning: string;
   details?: Record<string, any>;
